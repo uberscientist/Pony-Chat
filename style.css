@@ -1,0 +1,32 @@
+  body {
+    background-image:url('Cloudsdale1.gif');
+    background-repeat:no-repeat;
+    background-color:#287CA2;
+  }
+  #avatar {
+    position: absolute;
+  }
+  #chat_display {
+    position: absolute;
+    margin: 3px;
+    padding: 5px;
+    background-color: rgba(222,81,206,.8);
+    border-style: solid;
+    border-color: #FFF;
+    border-radius: 3px;
+  }
+  #usercontrols {
+    float: left;
+    block: clear;
+  }
+  #flyzone {
+    float:left;
+    border-style:solid;
+    border-width:10px;
+    border-color:#CEAEFA;
+    border-radius:20px;
+    height: 530px;
+    width: 970px;
+    margin: -10px 0px 5px -10px;
+    padding: 10px;
+  }
