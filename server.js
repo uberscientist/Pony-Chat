@@ -1,6 +1,6 @@
-var request = require('request');
 var io = require('socket.io').listen(4444);
-pony_array = []
+ip_array = [];
+pony_array = [];
 
 function sanitize(text){
   var i;
@@ -15,29 +15,51 @@ function sanitize(text){
   return clean_text;
 }
 
+function index_count(array, item){
+  var count = 0;
+  for(i=0; i < array.length; i++){
+    if(array[i] == item) count++;
+  }
+  return count
+}
 
 io.sockets.on('connection', function(socket) {
- pony_array.push(socket.id);
- rand_start = Math.round(Math.random()*444)+50;
+ var address = socket.handshake.address.address;
+ ip_array.push(address);
+ ip_count = index_count(ip_array,address);
 
- socket.emit('my_join', { 'id': socket.id,
-                          'list': pony_array, 
-                          'mouseX': rand_start,
-                          'mouseY': rand_start });
+//no more than 3 ponies per IP address
+ if(ip_count <= 3){
+   console.log('IP:' + address + ' connected '+ ip_count + ' times');
+   pony_array.push(socket.id);
+   rand_start = Math.round(Math.random()*444)+50;
 
- socket.broadcast.emit('join', { 'id': socket.id, 
-                                 'mouseX': rand_start,
-                                 'mouseY': rand_start });
+   socket.emit('my_join', { 'id': socket.id,
+                            'list': pony_array, 
+                            'mouseX': rand_start,
+                            'mouseY': rand_start });
+
+   socket.broadcast.emit('join', { 'id': socket.id, 
+                                   'mouseX': rand_start,
+                                   'mouseY': rand_start });
+ } else {
+   console.log('IP:' + address + ' connected '+ ip_count + ' times');
+   socket.emit('my_join', { 'id': socket.id,
+                            'list': pony_array, 
+                            'mouseX': rand_start,
+                            'mouseY': rand_start });
+ }
 
  socket.on('disconnect', function() {
-   index = pony_array.indexOf(socket.id);
+   var ip_index = ip_array.indexOf(address);
+   if(ip_index != -1) ip_array.splice(ip_index, 1);
+
+   var index = pony_array.indexOf(socket.id);
    if(index != -1) pony_array.splice(index, 1);
+
    socket.broadcast.emit('leave', {'id':socket.id})
  });
 
-/* var address = socket.handshake.address;
- console.log("Client IP: " + address.address);
-*/ 
  socket.on('click', function(data) {
    last_coords = data;
    socket.broadcast.emit('click',data);

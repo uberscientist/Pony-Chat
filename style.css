@@ -1,4 +1,6 @@
   body {
+    font-family: “Lucida Grande”, sans-serif;
+    color:#66C0E6;
     background-image:url('Cloudsdale1.gif');
     background-repeat:no-repeat;
     background-color:#287CA2;
@@ -10,7 +12,7 @@
     position: absolute;
     margin: 3px;
     padding: 5px;
-    background-color: rgba(222,81,206,.8);
+    background-color: #730BA0;
     border-style: solid;
     border-color: #FFF;
     border-radius: 3px;
@@ -26,8 +28,7 @@
     border-width:10px;
     border-color:#CEAEFA;
     border-radius:20px;
-    height: 530px;
-    width: 970px;
-    margin: -10px 0px 5px -10px;
-    padding: 10px;
+    height: 550px;
+    width: 990px;
+    margin: -22px 5px 5px -10px;
   }
