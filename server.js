@@ -30,7 +30,7 @@ io.sockets.on('connection', function(socket) {
 
 //no more than 3 ponies per IP address
  if(ip_count <= 3){
-   console.log('IP:' + address + ' connected '+ ip_count + ' times');
+   console.log('  IP:' + address + ' connected '+ ip_count + ' times');
    pony_array.push(socket.id);
    rand_start = Math.round(Math.random()*444)+50;
 
@@ -43,7 +43,7 @@ io.sockets.on('connection', function(socket) {
                                    'mouseX': rand_start,
                                    'mouseY': rand_start });
  } else {
-   console.log('IP:' + address + ' connected '+ ip_count + ' times');
+   console.log('  IP:' + address + ' connected '+ ip_count + ' times');
    socket.emit('my_join', { 'id': socket.id,
                             'list': pony_array, 
                             'mouseX': rand_start,
@@ -59,16 +59,21 @@ io.sockets.on('connection', function(socket) {
 
    socket.broadcast.emit('leave', {'id':socket.id})
  });
+ 
+ socket.on('change_sprite', function(data) {
+   socket.broadcast.emit('change_sprite', data)
+ });
 
  socket.on('click', function(data) {
-   last_coords = data;
-   socket.broadcast.emit('click',data);
+   if(data.mouseX < 990 && data.mouseY < 550){
+     socket.broadcast.emit('click', data);
+   }
  });
 
  socket.on('message', function(data) {
-   var clean_data = { 'id': data.id, 'name': sanitize(data.name),
+   var clean_data = { 'id': data.id,
+                      'name': sanitize(data.name),
                       'text': sanitize(data.text)};
-   var last_msg = clean_data;
    socket.broadcast.emit('message', clean_data);
  });
 });

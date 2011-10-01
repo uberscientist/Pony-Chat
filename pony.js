@@ -11,12 +11,13 @@ function sanitize(text){
   return clean_text;
 }
 
-function create_avatar(id,x,y){
-    $('#flyzone').append('<img class=\'avatar\' id=\''+ id +'\'src=\'derpy_hover_right.gif\'/>');
+function create_avatar(id,x,y,sprite){
+    $('#flyzone').append('<img class=\'avatar\' id=\''+ id +
+                         '\'src=\'./sprites/'+ sprite +'_hover_right.gif\'/>');
     $('#'+id+'.avatar').css({'left': x - 55 ,'top': y - 55});
   }
 
-function animate(id,x,y){  //animate avatar function
+function animate(id,x,y,sprite){  //animate avatar function
     var x = x - 50
     var y = y - 50
     var avatar_select = '#'+id+'.avatar';
@@ -24,19 +25,19 @@ function animate(id,x,y){  //animate avatar function
     //change direction of pony if needed
     av_position = $(avatar_select).position()
     if (av_position.left < x){
-      $(avatar_select).attr('src','derpy_fly_right.gif');
+      $(avatar_select).attr('src','./sprites/'+ sprite +'_fly_right.gif');
       var right = 1;
     } else {
-      $(avatar_select).attr('src','derpy_fly_left.gif');
+      $(avatar_select).attr('src','./sprites/'+ sprite +'_fly_left.gif');
       var right = 0;
     }
 
     $(avatar_select).animate({'left': x, //animate w/func to hover right or left
                               'top': y },'slow', function() {
       if (right == 1){
-        $(avatar_select).attr('src','derpy_hover_right.gif');
+        $(avatar_select).attr('src','./sprites/'+ sprite +'_hover_right.gif');
       } else {
-        $(avatar_select).attr('src','derpy_hover_left.gif');
+        $(avatar_select).attr('src','./sprites/'+ sprite +'_hover_left.gif');
       }
     });
   }
@@ -55,8 +56,14 @@ function animate(id,x,y){  //animate avatar function
   function display_connected(pony_array){
     for(i in pony_array){
       var rand = Math.round(Math.random()*444)+50;
-      create_avatar(pony_array[i],rand,rand);
+      create_avatar(pony_array[i],rand,rand,'derpy');
     }
+  }
+  
+  function change_sprite(data){
+    var rand = Math.round(Math.random()*444)+50;
+    $('#'+data.id).remove();
+    create_avatar(data.id,rand,rand,data.sprite);
   }
 
   var socket = io.connect('http://fgsfds.com:4444'); //socket.io recieve setup
@@ -65,32 +72,45 @@ function animate(id,x,y){  //animate avatar function
     display_connected(data.list);
     my_pony_id = data.id;
   });
-
   socket.on('join', function(data) {
-    var pony_id = data.id;
     var rand = Math.round(Math.random()*444)+50;
-    create_avatar(pony_id,rand,rand);
+    create_avatar(data.id,rand,rand,'derpy');
   });
-
   socket.on('leave', function(data){
     $('#'+data.id).remove();
-    $('#bubble'+data.id).remove();
   });
   socket.on('click', function(data) {
-    animate(data.id, data.mouseX, data.mouseY); //animate others avatars
+    animate(data.id, data.mouseX, data.mouseY, data.sprite); //animate others avatars
   });
-  socket.on('message',function(data) {
+  socket.on('message', function(data) {
     display_msg(data.id, data.name, data.text); //display your chat msgs
+  });
+  socket.on('change_sprite', function(data) {
+    change_sprite(data);
   });
 
   $(document).ready(function(){ 
+  //setup some globals on document.ready
     chat_name = $('#name').attr('value');
+    sprite = $('#select_list').val();
+
+  //change sprite on selecting new sprite from dropdown list
+    $('#select_list').change(function(){
+      sprite = $('#select_list').val();
+      data = { 'id': my_pony_id,
+               'sprite': sprite };
+      change_sprite(data);
+      socket.emit('change_sprite',data);
+    });
 
     $('#flyzone').click(function(e){  //mouse clicks socket.io and animate
-      socket.emit('click', { 'id': my_pony_id,
-                             'mouseX': e.pageX,
-                             'mouseY': e.pageY });
-      animate(my_pony_id, e.pageX, e.pageY); //animate my avatar
+      if(e.pageX < 990 && e.pageY < 550){
+        socket.emit('click', { 'id': my_pony_id,
+                               'mouseX': e.pageX,
+                               'mouseY': e.pageY,
+                               'sprite': sprite });
+        animate(my_pony_id, e.pageX, e.pageY, sprite); //animate my avatar
+      }
       $('#text_entry').focus();
     });
 
@@ -106,7 +126,7 @@ function animate(id,x,y){  //animate avatar function
                                 'text': chat_send, 
                                 'num':chat_num });
         display_msg(my_pony_id, sanitize(chat_name), sanitize(chat_send), chat_num); //display your chat msgs
-        $('#text_entry').attr('value',''); //clear texty, and refocus
+        $('#text_entry').attr('value',''); //clear text, and refocus
         $('#text_entry').focus();
       };
     });

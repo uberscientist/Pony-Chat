@@ -1,21 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Everyone Loves Derpy Hooves</title>
+<title>Your Pony Chat</title>
 <link rel='stylesheet' type='text/css' href='style.css' />
-<script src="http://fgsfds.com:4444/socket.io/socket.io.js"></script>
-<script src="./jquery.js"></script>
-<script src="./pony.js"></script>
+<script src='http://fgsfds.com:4444/socket.io/socket.io.js'></script>
+<script src='./jquery.js'></script>
+<script src='./pony.js'></script>
 </head>
 
 <body>
   <div id='flyzone'></div>
-  
   <div id='usercontrols'>
+    Avatar:
+    <select id='select_list'>
+      <option value='derpy'>Derpy</option>
+      <option value='fluttershy'>Fluttershy</option>
+      <option value='rainbow'>Rainbow Dash</option>
+    </select>
     Name:
-    <input id='name' type='text' value='Derpy' />
+    <input id='name' type='text' value='guest' />
     Enter Message:
     <input id='text_entry' type='text'/>
   </div>
+<div id='info'>
+<h2>Pony Chat</h2>
+<p>Now I am adding a few more characters.</p>
+<p>Art Credits:<a href='http://desktopponies.co.cc/1_8_Art-Credits.html'>Desktop Ponies art credits</a> 
+My twitter: <a href='http://twitter.com/#!/uberscientist'>@uberscientist</a> and my website <a href='http://www.abovesobelow.com'>Above So Below</a>...
+<p>So, yeah, I spent a while learning some new stuff like <a href='http://nodejs.org/'>Node.js</a> and <a href='http://socket.io/'>Socket.io</a> for a while. Also a shout to the <a href='http://jquery.com/'>jQuery</a> framework.</p>
+</div>
 </body>
 </html>
