@@ -5,6 +5,11 @@
     background-repeat:no-repeat;
     background-color:#287CA2;
   }
+  .name {
+    color:#C9AAD0;
+    background-color:#6E298D;
+    border-radius:5px;
+  }
   .avatar {
     position: absolute;
   }
@@ -17,17 +22,30 @@
     border-color: #FFF;
     border-radius: 3px;
   }
+  #chatbox {
+    background-color: rgba(113,14,160,.8);
+    position: absolute;
+    padding: 6px;
+    top: 425px;
+    width: 973px;
+    height: 120px;
+    border-style: none;
+    border-radius: 10px;
+    border-color: purple;
+    overflow: auto;
+  }
   #usercontrols {
     float: left;
     clear: both;
+    margin: 20px;
   }
   #flyzone {
     float:left;
     clear:both;
-    border-style:solid;
+    border-style:none;
     border-width:10px;
     border-color:#CEAEFA;
-    border-radius:20px;
+    border-radius:10px;
     height: 550px;
     width: 990px;
     margin: -10px 5px 5px -10px;
@@ -39,7 +57,7 @@
     border-style: solid;
     border-color: #CEAEFA;
     border-width: 10px;
-    border-radius: 20px;
+    border-radius: 10px;
     margin: 5px 0px 0px -10px;
     padding: 5px;
   }

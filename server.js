@@ -71,9 +71,11 @@ io.sockets.on('connection', function(socket) {
  });
 
  socket.on('message', function(data) {
-   var clean_data = { 'id': data.id,
-                      'name': sanitize(data.name),
-                      'text': sanitize(data.text)};
-   socket.broadcast.emit('message', clean_data);
+   if(data.text != '' && data.text.length < 140){
+     var clean_data = { 'id': data.id,
+                        'name': sanitize(data.name),
+                        'text': sanitize(data.text)};
+     socket.broadcast.emit('message', clean_data);
+   }
  });
 });
