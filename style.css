@@ -6,9 +6,10 @@
     background-color:#287CA2;
   }
   .name {
-    color:#C9AAD0;
-    background-color:#6E298D;
-    border-radius:5px;
+    position: absolute;
+    color: #C9AAD0;
+    background-color: #6E298D;
+    border-radius: 5px;
   }
   .avatar {
     position: absolute;

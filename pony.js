@@ -14,19 +14,20 @@ function sanitize(text){
 function create_avatar(id,x,y,sprite,name){
     $('#flyzone').append('<img class=\'avatar\' id=\''+ id +
                          '\'src=\'./sprites/'+ sprite +'_hover_right.gif\'/>');
-    $('#flyzone').append('<span class=\'name\' id=\'name' + id +
-                         '\'>'+ name + '</span>');
+    $('#flyzone').append('<div class=\'name\' id=\'name' + id +
+                         '\'>'+ name + '</div>');
     $('#'+id+'.avatar').css({'left': x - 55 ,'top': y - 55});
 }
 
 function animate(id,x,y,sprite){  //animate avatar function
-    var x = x - 50
-    var y = y - 50
+    var x = x - 50;
+    var y = y - 50;
     var avatar_select = '#'+id+'.avatar';
     var name_select = '#name'+id+'.name';
     
     //change direction of pony if needed
-    av_position = $(avatar_select).position()
+    av_position = $(avatar_select).position();
+
     if (av_position.left < x){
       $(avatar_select).attr('src','./sprites/'+ sprite +'_fly_right.gif');
       var right = 1;
@@ -36,8 +37,9 @@ function animate(id,x,y,sprite){  //animate avatar function
     }
 
     $(name_select).animate({'left': x,
-                            'top': y-20 },'slow');
-    $(avatar_select).animate({'left': x, //animate w/func to hover right or left
+                            'top': y-20 },'slow'); //animate the nametag
+
+    $(avatar_select).animate({'left': x,           //animate the avatar and then hover right or left
                               'top': y },'slow', function() {
       if (right == 1){
         $(avatar_select).attr('src','./sprites/'+ sprite +'_hover_right.gif');
@@ -50,7 +52,7 @@ function animate(id,x,y,sprite){  //animate avatar function
 function display_msg(id,name,msg) { //function to display new messages
   $('#chatbox').append(name +': '+msg+'<br/>');
   $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
-  $('#'+id+'.name').html(name);
+  $('#name'+id+'.name').html(name);
 }
   
 function display_connected(pony_array){
@@ -77,11 +79,15 @@ socket.on('my_join', function(data){
 socket.on('join', function(data) {
   var rand = Math.round(Math.random()*444)+50;
   create_avatar(data.id,rand,rand,'derpy',data.name);
-  $('#chatdisplay').append('<i>'+data.name+' joined</i><br/>');
+  $('#chatbox').append('<i>'+data.name+' joined</i><br/>');
+  $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
 });
 
 socket.on('leave', function(data){
   $('#'+data.id).remove();
+  $('#name'+data.id).remove();
+  $('#chatbox').append('<i>'+data.name+' left</i><br/>');
+  $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
 });
 
 socket.on('click', function(data) {

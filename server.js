@@ -41,7 +41,8 @@ io.sockets.on('connection', function(socket) {
 
    socket.broadcast.emit('join', { 'id': socket.id, 
                                    'mouseX': rand_start,
-                                   'mouseY': rand_start });
+                                   'mouseY': rand_start,
+                                   'name': 'Anonymous' });
  } else {
    console.log('  IP:' + address + ' connected '+ ip_count + ' times');
    socket.emit('my_join', { 'id': socket.id,
