@@ -58,7 +58,8 @@ io.sockets.on('connection', function(socket) {
    var index = pony_array.indexOf(socket.id);
    if(index != -1) pony_array.splice(index, 1);
 
-   socket.broadcast.emit('leave', {'id':socket.id})
+   socket.broadcast.emit('leave', {'id':socket.id
+                                   'name':socket.id})
  });
  
  socket.on('change_sprite', function(data) {
@@ -72,7 +73,7 @@ io.sockets.on('connection', function(socket) {
  });
 
  socket.on('message', function(data) {
-   if(data.text != '' && data.text.length < 140){
+   if(data.text != '' && data.text.length < 140 && data.name.length < 14){
      var clean_data = { 'id': data.id,
                         'name': sanitize(data.name),
                         'text': sanitize(data.text)};

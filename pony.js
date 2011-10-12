@@ -133,7 +133,7 @@ $(document).ready(function(){
   if(event.keyCode == '13'){
       var chat_name = $('#name').attr('value');
       var chat_send = $('#text_entry').attr('value');
-      if(chat_send != '' && chat_send.length < 140){
+      if(chat_send != '' && chat_send.length < 140 && chat_name.length < 14){
         socket.emit('message',{ 'id': my_pony_id, 
                                 'name': chat_name,
                                 'text': chat_send });
