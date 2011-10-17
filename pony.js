@@ -1,3 +1,9 @@
+String.prototype.parseURL = function() {
+	return this.replace(/[A-Za-z]+:\/\/[A-Za-z0-9-_]+\.[A-Za-z0-9-_:%&~\?\/.=]+/g, function(url) {
+		return url.link(url);
+	});
+};
+
 function sanitize(text){
   var i;
   var clean_text = '';
@@ -50,7 +56,7 @@ function animate(id,x,y,sprite){  //animate avatar function
 }
 
 function display_msg(id,name,msg) { //function to display new messages
-  $('#chatbox').append(name +': '+msg+'<br/>');
+  $('#chatbox').append(name +': '+msg.parseURL()+'<br/>');
   $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
   $('#name'+id+'.name').html(name);
 }

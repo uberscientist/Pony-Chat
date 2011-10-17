@@ -58,7 +58,7 @@ io.sockets.on('connection', function(socket) {
    var index = pony_array.indexOf(socket.id);
    if(index != -1) pony_array.splice(index, 1);
 
-   socket.broadcast.emit('leave', {'id':socket.id
+   socket.broadcast.emit('leave', {'id':socket.id,
                                    'name':socket.id})
  });
  
